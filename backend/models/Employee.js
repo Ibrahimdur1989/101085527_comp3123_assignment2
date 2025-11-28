@@ -10,7 +10,9 @@ const employeeSchema = new mongoose.Schema({
     position:        { type: String, required: true },
     salary:          { type: Number, required: true },
     date_of_joining: { type: Date, required: true },
-    department:      { type: String, required: true }
+    department:      { type: String, required: true },
+
+     profileImage:    { type: String}
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
 
 // export model
