@@ -1,14 +1,18 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { AuthContext} from "../context/AuthContext";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login(){
+
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
     const navigate = useNavigate();
+
+    const {login} = useContext(AuthContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,7 +23,7 @@ function Login(){
                 password
             });
 
-            localStorage.setItem("token", response.data.token);
+            login(response.data.token);
 
             navigate("/employees");
         } catch(err) {
@@ -56,9 +60,14 @@ function Login(){
                     />
                 </div>
 
-                <button className="btn btn-primary" type="submit">Login</button>
+                <button className="btn btn-primary" type="submit">
+                    Login
+                </button>
 
-                <Link to="/signup">Create an account</Link>
+                <div style={{marginTop: "10px"}}>
+                    <Link to="/signup">Create an account</Link>
+                </div>
+                
 
             </form>
         </div>
