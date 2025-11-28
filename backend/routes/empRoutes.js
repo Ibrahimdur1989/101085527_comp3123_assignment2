@@ -58,6 +58,50 @@ router.post('/employees',
     }
 )
 
+router.get(
+  '/employees/search',
+  [
+    query('department').optional().isString(),
+    query('position').optional().isString()
+  ],
+
+  async(req, res, next) => {
+    try{
+      const v = validate(req, res);
+      if (v) return;
+
+      const {department, position} = req.query;
+
+      let filter = {};
+
+      if(department){
+        filter.department = department;
+      }
+
+      if(position){
+        filter.position = position;
+      }
+
+      const employee = await Employee.find(filter).lean();
+
+      const out = employee.map(e => ({
+        employee_id: e._id.toString(),
+        first_name: e.first_name,
+        last_name:e.last_name,
+        email:e.email,
+        position: e.position,
+        salary: e.salary,
+        date_of_joining: e.date_of_joining,
+        department: e.department
+      }));
+
+      res.status(200).json(out);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 // find employee by id
 router.get('/employees/:eid',
     [ param('eid').isMongoId() ],
