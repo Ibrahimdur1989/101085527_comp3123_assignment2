@@ -58,6 +58,8 @@ function Login(){
 
                 <button className="btn btn-primary" type="submit">Login</button>
 
+                <Link to="/signup">Create an account</Link>
+
             </form>
         </div>
     );
