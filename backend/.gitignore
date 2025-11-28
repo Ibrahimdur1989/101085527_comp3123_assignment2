@@ -1,0 +1,9 @@
+
+# ignore environment file
+
+node_modules/ 
+.env 
+*.log
+.DS_Store
+.vscode/
+

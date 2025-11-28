@@ -1,0 +1,264 @@
+{
+	"info": {
+		"_postman_id": "76f62087-ac25-48e8-97fb-5de09f4c8105",
+		"name": "COMP3123_A1_101085527",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48726058",
+		"_collection_link": "https://school-3470.postman.co/workspace/COMP3095~37aa5694-b087-4f23-905d-0c81958fab57/collection/48726058-76f62087-ac25-48e8-97fb-5de09f4c8105?action=share&source=collection_link&creator=48726058"
+	},
+	"item": [
+		{
+			"name": "Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Sam_Deaf\",\r\n    \"email\": \"Sam_Deaf@gmail.com\",\r\n    \"password\": \"passSam\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/user/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{    \r\n    \"email\": \"Omer_2025@gmail.com\",\r\n    \"password\": \"passOmer\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Employee-List",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/emp/employees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"emp",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Employee-Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\": \"Ahmed\",\r\n    \"last_name\": \"Awdah\",\r\n    \"email\": \"Ahmed_Awdah@gmail.com\",\r\n    \"position\": \"Designer\",\r\n    \"salary\": 65000,\r\n    \"date_of_joining\": \"2023-08-10\",\r\n    \"department\": \"Design\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/emp/employees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"emp",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find-Employee",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/emp/employees/68ebe3c7bc41841133009693",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"emp",
+						"employees",
+						"68ebe3c7bc41841133009693"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update-Employee",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\": \"Ahmed Awdah\",\r\n    \"last_name\": \"Al-Serri\",\r\n    \"email\": \"Ahmed_Awdah@gmail.com\",\r\n    \"position\": \"Designer\",\r\n    \"salary\": 80000,\r\n    \"date_of_joining\": \"2023-08-10\",\r\n    \"department\": \"Design\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/emp/employees/68ebe3c7bc41841133009693",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"emp",
+						"employees",
+						"68ebe3c7bc41841133009693"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete-Employee",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/v1/emp/employees?eid=68ebe3c7bc41841133009693",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"emp",
+						"employees"
+					],
+					"query": [
+						{
+							"key": "eid",
+							"value": "68ebe3c7bc41841133009693"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "http://localhost:8081",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
