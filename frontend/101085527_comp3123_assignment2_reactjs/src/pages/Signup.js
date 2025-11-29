@@ -2,11 +2,13 @@ import React, {useState} from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const API = process.env.REACT_APP_API_URL;
+
 function SignUp(){
 
     const navigate = useNavigate();
 
-    const [formDate, setFormData] = useState({
+    const [formData, setFormData] = useState({
         username: "",
         email: "",
         password: ""
@@ -16,8 +18,8 @@ function SignUp(){
     const [message, setMessage] = useState("");
 
     const handleChange = (e) => {
-        setFormDate({
-            ...formDate,
+        setFormData({
+            ...formData,
             [e.target.name]: e.target.value
         });
     };
@@ -28,7 +30,7 @@ function SignUp(){
         setMessage("");
 
         try{
-            const response = await axios.post("http://localhost:3000/signup", formData);
+            await axios.post(`${API}/user/signup`, formData);
             setMessage("Signup successful!");
             setTimeout(() => navigate("/login"), 1500);
         } catch(err){
@@ -42,9 +44,9 @@ function SignUp(){
             <h1>Create Account</h1>
 
             {error && <p style={{color:"red"}}>{error}</p>}
-            {message && <p style={{color:"red"}}>{message}</p>}
+            {message && <p style={{color:"green"}}>{message}</p>}
 
-            <from onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <input 
                     type="text" 
                     name="username" 
@@ -71,7 +73,7 @@ function SignUp(){
 
                 <button type="submit">Sign Up</button>
 
-            </from>
+            </form>
         </div>
     );
 }

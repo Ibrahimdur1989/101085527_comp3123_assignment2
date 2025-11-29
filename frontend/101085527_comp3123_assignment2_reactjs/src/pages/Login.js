@@ -3,6 +3,8 @@ import axios from "axios";
 import { AuthContext} from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 
+const API = process.env.REACT_APP_API_URL;
+
 function Login(){
 
 
@@ -18,12 +20,12 @@ function Login(){
         e.preventDefault();
 
         try{
-            const response = await axios.post("http://localhost:8080/login", {
+            const response = await axios.post(`${API}/user/login`, {
                 email,
                 password
             });
 
-            login(response.data.token);
+            login(response.data.jwt_token);
 
             navigate("/employees");
         } catch(err) {

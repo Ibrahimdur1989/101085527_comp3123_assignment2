@@ -1,0 +1,194 @@
+import React, {useState, useContext} from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+
+const API = process.env.REACT_APP_API_URL;
+
+
+function EmployeeAdd(){
+
+    const navigate = useNavigate();
+    const {token} = useContext(AuthContext);
+
+    const [formData, setFormData] = useState({
+        employee_id: "",
+        first_name: "",
+        last_name: "",
+        email: "",
+        department: "",
+        position: "",
+        salary: ""
+    });
+
+    const [profileImage, setProfileImage] = useState(null);
+    const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleFileChange = (e) => {
+        setProfileImage(e.target.files[0] || null);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
+        setMessage("");
+
+        try{
+            const data = new FormData();
+            data.append("employee_id", formData.employee_id);
+            data.append("first_name", formData.first_name);
+            data.append("last_name", formData.last_name);
+            data.append("email", formData.email);
+            data.append("department", formData.department);
+            data.append("position", formData.position);
+            data.append("salary", formData.salary);
+
+            if (profileImage){
+                data.append("profileImage", profileImage);
+            }
+
+            await axios.post(`${API}/emp/employee`, data, {
+                headers:{
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+
+            setMessage("Employee added successfully!");
+            setTimeout(() => navigate("/employees"), 1500);
+
+        } catch (err){
+            console.error("Error adding employee:", err);
+            setError(
+                err.response?.data?.error ||
+                "Failed to add employee."
+            );
+        }
+    };
+
+
+    return(
+        <div style={{maxWidth: "500px", margin: "30px auto"}}>
+
+            <h2>Add New Employee</h2>
+
+            {error && <p style={{color:"red"}}>{error}</p>}
+            {message && <p style={{color:"green"}}>{message}</p>}
+
+            <form onSubmit={handleSubmit}>
+
+                <div style={{marginBottom: "10px"}}>
+                    <label>Employee ID</label>
+                    <input 
+                        type="text" 
+                        name="employee_id" 
+                        className="form-control" 
+                        value={formData.employee_id} 
+                        onChange={handleChange} 
+                        required 
+                    />
+                </div>
+
+                <div style={{marginBottom: "10px"}}>
+                    <label>First Name</label>
+                    <input 
+                        type="text" 
+                        name="first_name" 
+                        className="form-control" 
+                        value={formData.first_name} 
+                        onChange={handleChange} 
+                        required 
+                    />
+                </div>
+
+                <div style={{marginBottom: "10px"}}>
+                    <label>Last Name</label>
+                    <input 
+                        type="text" 
+                        name="last_name" 
+                        className="form-control" 
+                        value={formData.last_name} 
+                        onChange={handleChange} 
+                        required 
+                    />
+                </div>
+
+                <div style={{marginBottom: "10px"}}>
+                    <label>Email</label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        className="form-control" 
+                        value={formData.email} 
+                        onChange={handleChange} 
+                        required 
+                    />
+                </div>
+
+                <div style={{marginBottom: "10px"}}>
+                    <label>Department</label>
+                    <input 
+                        type="text" 
+                        name="department" 
+                        className="form-control" 
+                        value={formData.department} 
+                        onChange={handleChange} 
+                        required 
+                    />
+                </div>
+
+                <div style={{marginBottom: "10px"}}>
+                    <label>Position</label>
+                    <input 
+                        type="text" 
+                        name="position" 
+                        className="form-control" 
+                        value={formData.position} 
+                        onChange={handleChange} 
+                        required 
+                    />
+                </div>
+
+                <div style={{marginBottom: "10px"}}>
+                    <label>Salary</label>
+                    <input 
+                        type="number" 
+                        name="salary" 
+                        className="form-control" 
+                        value={formData.salary} 
+                        onChange={handleChange} 
+                        required 
+                    />
+                </div>
+
+                <div style={{marginBottom: "10px"}}>
+                    <label>Profile Picture</label>
+                    <input 
+                        type="file" 
+                        name="profileImage" 
+                        className="form-control"  
+                        onChange={handleFileChange} 
+                        accept="image/*"
+                    />
+                </div>
+
+                
+                <button className="btn btn-primary" type="submit">
+                    Add Employee
+                </button>
+
+            </form>
+
+        </div>
+    );
+}
+
+export default EmployeeAdd;
