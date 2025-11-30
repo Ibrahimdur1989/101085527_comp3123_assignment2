@@ -1,7 +1,8 @@
 import React from 'react';
+import "./App.css"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from './pages/Login';
-import SignUp from './pages/Signup';
+import Signup from './pages/Signup';
 import EmployeeList from './pages/EmployeeList';
 import { AuthProvider } from './context/AuthContext';
 import EmployeeAdd from './pages/EmployeeAdd';
@@ -18,7 +19,7 @@ function App() {
           <Route path='/' element={<Navigate to="/login"/>}/>
 
           <Route path='/login' element={<Login />}/>
-          <Route path='/signup' element={<SignUp />}/>
+          <Route path='/signup' element={<Signup />}/>
 
           <Route path='/employees' element={<EmployeeList />}/>
 

@@ -15,6 +15,11 @@ function EmployeeList() {
 
     const navigate = useNavigate();
 
+    
+    const getEmployeeId = (emp) => {
+        return emp._id || emp._id || emp._id || emp.employee_id
+    };
+
     useEffect(() => {
         axios.get(`${API}/emp/employees`, {
             headers: {
@@ -62,16 +67,16 @@ function EmployeeList() {
         if(!confirmDelete) return;
 
         try{
-            await axios.delete(`${API}/emp/employees`, {
-                params: {eid:id},
+            await axios.delete(`${API}/emp/employees/${id}`, {
                 headers: {
-                    "Authorization": `Bearer ${token}`
-                }
+                    "Authorization": `Bearer ${token}`,
+                },
             });
 
-            setEmployees((prev) => prev.filter((emp) => emp._id !== id));
+            setEmployees((prev) => prev.filter((emp) => getEmployeeId(emp) !== id));
+            alert("Employee deleted successfully.")
         } catch(err) {
-            console.log("Error deleting employee:", err);
+            console.error("Error deleting employee:", err.response?.data || err.message);
             alert("Failed to delete employee.");
         }
     };
@@ -80,41 +85,44 @@ function EmployeeList() {
 
     return(
         <div style={{padding: "20px"}}>
-            <h2>Employee List</h2>
+            <h2 className="form-title">Employee List</h2>
 
-            <button 
-            className="btn btn-success" 
-            style={{marginBottom:"10px"}} 
-            onClick={() => navigate("/employees/add")}>
-                Add Employee
-            </button>
+            <div className="top-bar">            
 
-            <div style={{marginBottom: "20px"}}>
-                <input
-                    type="text"
-                    placeholder="Search by Department"
-                    value={searchDept}
-                    onChange={(e) => setSearchDept(e.target.value)}
-                    style={{marginRight: "10px"}}
-                    className="form-control"
-                />
-
-                <input
-                    type="text"
-                    placeholder="Search by Position"
-                    value={searchPosition}
-                    onChange={(e) => setSearchPosition(e.target.value)}
-                    style={{marginRight: "10px", marginTop: "10px"}}
-                    className="form-control"
-                />
-
-                <button className="btn btn-primary" style={{marginTop: "10px"}} onClick={handleSearch}>
-                    Search
+                <button 
+                className="btn btn-success" 
+                onClick={() => navigate("/employees/add")}>
+                    Add Employee
                 </button>
 
+                <div style={{ display: "flex", gap: "10px"}}>
+                    <input
+                        type="text"
+                        placeholder="Search by Department"
+                        value={searchDept}
+                        onChange={(e) => setSearchDept(e.target.value)}
+                        className="input-box search-input"
+                    />
+
+                    <input
+                        type="text"
+                        placeholder="Search by Position"                    
+                        value={searchPosition}
+                        onChange={(e) => setSearchPosition(e.target.value)}
+                        className="input-box search-input"
+                    />
+
+                    <button 
+                        className="btn btn-primary" 
+                        style={{marginTop: "10px", marginLeft: "8px"}} 
+                        onClick={handleSearch}>
+                        Search
+                    </button>
+
+                </div>
             </div>
 
-            <table border="1" width="100%" cellPadding="10">
+            <table className="employee-table">
                 <thead>
                     <tr>
                         <th>Employee ID</th>
@@ -127,34 +135,41 @@ function EmployeeList() {
                 </thead>
 
                 <tbody>
-                    {employees.map((emp) => (
-                        <tr key={emp._id}>
-                            <td>{emp.employee_id}</td>
-                            <td>{emp.first_name} {emp.last_name}</td>
-                            <td>{emp.email}</td>
-                            <td>{emp.department}</td>
-                            <td>{emp.position}</td>
-                            <td>
-                                <button className="btn btn-sm btn-info" 
-                                        style={{marginRight:"5px"}} 
-                                        onClick={() => handleView(emp._id)}>                                    
-                                    View
-                                </button>
+                    {employees.map((emp) => {
+                        const id = getEmployeeId(emp);
 
-                                <button className="btn btn-sm btn-warning" 
-                                        style={{marginRight:"5px"}} 
-                                        onClick={() => handleEdit(emp._id)}>                                    
-                                    Edit
-                                </button>
+                        return (
+                            <tr key={id}>
+                                <td>{id}</td>
+                                <td>{emp.first_name} {emp.last_name}</td>
+                                <td>{emp.email}</td>
+                                <td>{emp.department}</td>
+                                <td>{emp.position}</td>
+                                <td>
+                                    <button className="btn btn-secondary btn-sm" 
+                                            style={{marginRight:"5px"}} 
+                                            onClick={() => handleView(id)}>                                    
+                                        View
+                                    </button>
 
-                                <button className="btn btn-sm btn-danger" 
-                                        onClick={() => handleDelete(emp._id)}>                                    
-                                    Delete
-                                </button>
+                                    <button className="btn btn-warning btn-sm" 
+                                            style={{marginRight:"5px"}} 
+                                            onClick={() => handleEdit(id)}>                                    
+                                        Edit
+                                    </button>
 
-                            </td>
-                        </tr>
-                    ))}
+                                    <button className="btn btn-danger btn-sm" 
+                                            onClick={() => handleDelete(id)}>                                    
+                                        Delete
+                                    </button>
+
+                                </td>
+                            </tr>
+                        );
+                    })}                   
+                    
+                        
+                    
                 </tbody>
             </table>
         </div>

@@ -21,7 +21,7 @@ app.use(morgan('dev'));
 connectDB();
 
 app.get('/', (req,res) => {
-    res.send('COMP3123 Assignment 1 API Running....');
+    res.send('COMP3123 Assignment API Running....');
 });
 
 // use rout modules 

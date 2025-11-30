@@ -8,7 +8,7 @@ const API = process.env.REACT_APP_API_URL;
 
 function EmployeeView() {
 
-    const {id} = useParams;
+    const {id} = useParams();
     const {token} = useContext(AuthContext);
 
     const [employee, setEmployee] = useState(null);
@@ -17,14 +17,14 @@ function EmployeeView() {
     useEffect(() => {
         const fetchEmployee = async () => {
             try{
-                const res = await axios.get(`${API}/emp/employee/${id}`, {
+                const res = await axios.get(`${API}/emp/employees/${id}`, {
                     headers: {
                         "Authorization": `Bearer ${token}`
-                    }
+                    },
                 });
                 setEmployee(res.data)
             } catch(err) {
-                console.error("Error fetching employee:", err);
+                console.error("Error fetching employee:", err.response?.data || err.message);
                 setError("Failed to load employee details.");
             }
         };
@@ -41,28 +41,47 @@ function EmployeeView() {
     }
 
     return(
-        <div style={{maxWidth: "500px", margin: "30px auto"}}>
-            <h2>Employee Details</h2>
+        <div className="page-center">
+            <div className="form-card-large">
+                <h2 className="form-title">Employee Details</h2>
 
-            <p><strong>Employee ID:</strong> {employee.employee_id}</p>
-            <p><strong>Full Name:</strong> {employee.first_name} {employee.last_name}</p>
-            <p><strong>Email:</strong> {employee.email}</p>
-            <p><strong>Department:</strong> {employee.department}</p>
-            <p><strong>Position:</strong> {employee.position}</p>
-            <p><strong>Salary:</strong> {employee.salary}</p>
+                {error && <div className="alert-error">{error}</div>}
+                {!employee && !error && (<p className="details-loading">Loading...</p>)}
 
-            {employee.profileImage && (
-                <div style={{marginTop: "10px"}}>
-                    <strong>Profile Picture</strong>
-                    <br />
-                    <img 
-                        src={employee.profileImage} 
-                        alt="Profile"
-                        style={{ width: "120px", height: "120px", objectFit: "cover", marginTop: "5px"}} 
-                    />
-                </div>
-            )}
+                {employee && (
+                    <div className="details-list">
+                        <div className="details-row">
+                            <span className="details-label">Employee ID:</span>
+                            <span>{employee.employee_id}</span>
+                        </div>
 
+                        <div className="details-row">
+                            <span className="details-label">Full Name:</span>
+                            <span>{employee.first_name} {employee.last_name}</span>
+                        </div>
+
+                        <div className="details-row">
+                            <span className="details-label">Email:</span>
+                            <span>{employee.email}</span>
+                        </div>
+
+                        <div className="details-row">
+                            <span className="details-label">Department:</span>
+                            <span>{employee.department}</span>
+                        </div>
+
+                        <div className="details-row">
+                            <span className="details-label">Position:</span>
+                            <span>{employee.position}</span>
+                        </div>
+
+                        <div className="details-row">
+                            <span className="details-label">Salary:</span>
+                            <span>{employee.salary}</span>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

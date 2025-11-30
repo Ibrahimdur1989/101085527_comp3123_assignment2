@@ -6,9 +6,9 @@ import { AuthContext } from "../context/AuthContext";
 const API = process.env.REACT_APP_API_URL;
 
 
-function EmployeeAdd(){
+function EmployeeEdit(){
 
-    const {id} = useParams;
+    const {id} = useParams();
     const navigate = useNavigate();
     const {token} = useContext(AuthContext);
 
@@ -22,7 +22,6 @@ function EmployeeAdd(){
         salary: ""
     });
 
-    const [profileImage, setProfileImage] = useState(null);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(true);
@@ -30,10 +29,10 @@ function EmployeeAdd(){
     useEffect(() => {
         const fetchEmployee = async () => {
             try{
-                const res = await axios.get(`${API}/emp/employee/${id}`, {
+                const res = await axios.get(`${API}/emp/employees/${id}`, {
                     headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
+                        "Authorization": `Bearer ${token}`,
+                    },
                 });
 
                 const emp =res.data;
@@ -48,7 +47,7 @@ function EmployeeAdd(){
                 });
 
             } catch(err) {
-                console.error("Error fetching employee:", err);
+                console.error("Error fetching employee:", err.response?.data || err.message);
                 setError("Failed to load employee details.");
             } finally {
                 setLoading(false);
@@ -65,33 +64,25 @@ function EmployeeAdd(){
         });
     };
 
-    const handleFileChange = (e) => {
-        setProfileImage(e.target.files[0] || null);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
         setMessage("");
 
         try{
-            const data = new FormData();
-            data.append("employee_id", formData.employee_id);
-            data.append("first_name", formData.first_name);
-            data.append("last_name", formData.last_name);
-            data.append("email", formData.email);
-            data.append("department", formData.department);
-            data.append("position", formData.position);
-            data.append("salary", formData.salary);
+            const payload = {
+                employee_id: formData.employee_id,
+                first_name: formData.first_name,
+                last_name: formData.last_name,
+                email: formData.email,
+                department: formData.department,
+                position: formData.position,
+                salary: formData.salary
+            };
 
-            if (profileImage){
-                data.append("profileImage", profileImage);
-            }
-
-            await axios.put(`${API}/emp/employee/${id}`, data, {
+            await axios.put(`${API}/emp/employees/${id}`, payload, {
                 headers:{
                     "Authorization": `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data"
                 }
             });
 
@@ -99,8 +90,9 @@ function EmployeeAdd(){
             setTimeout(() => navigate("/employees"), 1500);
 
         } catch (err){
-            console.error("Error updating employee:", err);
+            console.error("Error updating employee:", err.response?.data || err.message);
             setError(
+                err.response?.data?.message ||
                 err.response?.data?.error ||
                 "Failed to update employee."
             );
@@ -113,119 +105,111 @@ function EmployeeAdd(){
 
 
     return(
-        <div style={{maxWidth: "500px", margin: "30px auto"}}>
 
-            <h2>Edit Employee</h2>
+        <div className="page-center">
+            <div className="form-card-large">
 
-            {error && <p style={{color:"red"}}>{error}</p>}
-            {message && <p style={{color:"green"}}>{message}</p>}
+                <h2 className="form-title">Edit Employee</h2>
 
-            <form onSubmit={handleSubmit}>
+                {error && <div className="alert-error">{error}</div>}
+                {message && <div className="alert-success">{message}</div>}
 
-                <div style={{marginBottom: "10px"}}>
-                    <label>Employee ID</label>
-                    <input 
-                        type="text" 
-                        name="employee_id" 
-                        className="form-control" 
-                        value={formData.employee_id} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
+                <form onSubmit={handleSubmit} className="auth-form">
 
-                <div style={{marginBottom: "10px"}}>
-                    <label>First Name</label>
-                    <input 
-                        type="text" 
-                        name="first_name" 
-                        className="form-control" 
-                        value={formData.first_name} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
+                    <div className="form-group">
+                        <label>Employee ID</label>
+                        <input 
+                            type="text" 
+                            name="employee_id" 
+                            className="input-box" 
+                            value={formData.employee_id} 
+                            onChange={handleChange} 
+                            required 
+                        />
+                    </div>
 
-                <div style={{marginBottom: "10px"}}>
-                    <label>Last Name</label>
-                    <input 
-                        type="text" 
-                        name="last_name" 
-                        className="form-control" 
-                        value={formData.last_name} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
+                    <div className="form-group">
+                        <label>First Name</label>
+                        <input 
+                            type="text" 
+                            name="first_name" 
+                            className="input-box" 
+                            value={formData.first_name} 
+                            onChange={handleChange} 
+                            required 
+                        />
+                    </div>
 
-                <div style={{marginBottom: "10px"}}>
-                    <label>Email</label>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        className="form-control" 
-                        value={formData.email} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
+                    <div className="form-group">
+                        <label>Last Name</label>
+                        <input 
+                            type="text" 
+                            name="last_name" 
+                            className="input-box" 
+                            value={formData.last_name} 
+                            onChange={handleChange} 
+                            required 
+                        />
+                    </div>
 
-                <div style={{marginBottom: "10px"}}>
-                    <label>Department</label>
-                    <input 
-                        type="text" 
-                        name="department" 
-                        className="form-control" 
-                        value={formData.department} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
+                    <div className="form-group">
+                        <label>Email</label>
+                        <input 
+                            type="email" 
+                            name="email" 
+                            className="input-box" 
+                            value={formData.email} 
+                            onChange={handleChange} 
+                            required 
+                        />
+                    </div>
 
-                <div style={{marginBottom: "10px"}}>
-                    <label>Position</label>
-                    <input 
-                        type="text" 
-                        name="position" 
-                        className="form-control" 
-                        value={formData.position} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
+                    <div className="form-group">
+                        <label>Department</label>
+                        <input 
+                            type="text" 
+                            name="department" 
+                            className="input-box" 
+                            value={formData.department} 
+                            onChange={handleChange} 
+                            required 
+                        />
+                    </div>
 
-                <div style={{marginBottom: "10px"}}>
-                    <label>Salary</label>
-                    <input 
-                        type="number" 
-                        name="salary" 
-                        className="form-control" 
-                        value={formData.salary} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
+                    <div className="form-group">
+                        <label>Position</label>
+                        <input 
+                            type="text" 
+                            name="position" 
+                            className="input-box" 
+                            value={formData.position} 
+                            onChange={handleChange} 
+                            required 
+                        />
+                    </div>
 
-                <div style={{marginBottom: "10px"}}>
-                    <label>Profile Picture</label>
-                    <input 
-                        type="file" 
-                        name="profileImage" 
-                        className="form-control"  
-                        onChange={handleFileChange} 
-                        accept="image/*"
-                    />
-                </div>
+                    <div className="form-group">
+                        <label>Salary</label>
+                        <input 
+                            type="number" 
+                            name="salary" 
+                            className="input-box" 
+                            value={formData.salary} 
+                            onChange={handleChange} 
+                            required 
+                        />
+                    </div>
 
-                
-                <button className="btn btn-primary" type="submit">
-                    Update Employee
-                </button>
+                    
+                    <button className="btn btn-primary btn-center" type="submit">
+                        Update Employee
+                    </button>
 
-            </form>
+                </form>
 
+            </div>
         </div>
     );
 }
 
-export default EmployeeAdd;
+export default EmployeeEdit;

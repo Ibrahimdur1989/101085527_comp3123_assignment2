@@ -146,17 +146,23 @@ router.put('/employees/:eid',
 
 
 // delete employee
-router.delete('/employees',
-    [ query('eid').isMongoId() ],
+router.delete('/employees/:eid',
+    [ param('eid').isMongoId() ],
     async (req, res, next) => {
         try{
           const v = validate(req, res);
           if (v) return;
 
-          const doc = await Employee.findByIdAndDelete(req.query.eid);
-          if (!doc) return res.status(404).json({ status:false, message:'Employee not found'});
-          res.status(204).send();
-        } catch (err) { next(err); }
+          const doc = await Employee.findByIdAndDelete(req.params.eid);
+          if (!doc) {return res.status(404).json({ status:false, message:'Employee not found'});
+          }
+
+          return res.status(200).json({
+            message: 'Employee deleted successfully.'
+          });
+        } catch (err) {
+          next(err);
+        }
     }
 );
 

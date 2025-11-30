@@ -35,44 +35,47 @@ function Login(){
 
 
     return (
-        <div style={{maxWidth:"400px", margin: "50px auto"}}>
-            <h2>Login</h2>
+        <div className="page-center">
+            <div className="form-card">
+                <h1 className="form-title">Login</h1>
 
-            {error && <p style={{color:"red"}}>{error}</p>}
+                {error && <div className="alert-error">{error}</div>}
 
-            <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="auth-form">
 
-                <div style={{marginBottom: "10px"}}>
-                    <label>Email</label>
-                    <input 
-                        type="email"
-                        className="form-control"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)} required
-                    />
-                </div>
+                    <div className="form-group">
+                        <label>Email</label>
+                        <input 
+                            type="email"
+                            className="input-box"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)} required
+                        />
+                    </div>
 
-                <div style={{marginBottom: "10px"}}>
-                    <label>Password</label>
-                    <input 
-                        type="password"
-                        className="form-control"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)} required
-                    />
-                </div>
+                    <div className="form-group">
+                        <label>Password</label>
+                        <input 
+                            type="password"
+                            className="input-box"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)} required
+                        />
+                    </div>
 
-                <button className="btn btn-primary" type="submit">
-                    Login
-                </button>
+                    <button className="btn btn-primary btn-center" type="submit">
+                        Login
+                    </button>
 
-                <div style={{marginTop: "10px"}}>
-                    <Link to="/signup">Create an account</Link>
-                </div>
-                
+                    <p className="auth-footer-text">
+                        Don't have an account?{" "}
+                        <Link to="/signup" className="link">Create an account</Link>
+                    </p>  
 
-            </form>
+                </form>
+            </div>
         </div>
+        
     );
 }
 
