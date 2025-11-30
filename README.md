@@ -8,13 +8,44 @@ It connects to my backend from Assignment 1 (Node + Express + MongoDB)
 
 
 
-## How to Run (Backend)&(Frontend)
+## How to Run 
+
+### Option 1 - Run without Docker
+
+### 1. Backend
 
 ### `npm install` 
 ### `npm start`
 
-Backend must be running on: http://localhost:8081 \
-forntend must be running on: http://localhost:3000
+Backend runs on: http://localhost:8081 
+
+### 2. frontend
+
+### cd frontend
+### `npm install` 
+### `npm start`
+
+frontend runs on: http://localhost:3000
+
+
+### Option 2 - Run with Docker (Docker Compose)
+
+From the project root (Where docker-compose.yml is located)
+
+to clear up:
+### `docker-compose down`
+
+to build 
+### `docker-compose up --build`
+
+This will start 3 containers:
+* comp3123-mongo -- MongoDB (port 27017:27017)
+* comp3123-backend -- Backend (port 8081:8081)
+* comp3123-frontend -- Frontend (port 3000:3000)
+
+Then open:
+* Frontend: http://localhost:3000
+* Backend API: http://localhost:8081/api/v1
 
 
 ## Features
@@ -38,7 +69,9 @@ forntend must be running on: http://localhost:3000
 * DELETE  /api/v1/emp/employees/:id
 * GET     /api/v1/emp/employees/search
 ```
-## Build
+## Build (Production)
+
+From the frontend folder
 
 ### `npm run build`
 
